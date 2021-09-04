@@ -72,8 +72,6 @@ namespace DepotDownloader
                 }*/
                 if ( string.IsNullOrWhiteSpace( ContentDownloader.Config.InstallDirectory ) )
                 {
-                    DEFAULT_DOWNLOAD_DIR = $"depots";
-
                     Directory.CreateDirectory( DEFAULT_DOWNLOAD_DIR );
 
                     char[] arr = contentName.ToCharArray();
