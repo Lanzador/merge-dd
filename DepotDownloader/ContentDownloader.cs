@@ -51,12 +51,13 @@ namespace DepotDownloader
             }
         }
 
-        static bool CreateDirectories(uint depotId, uint depotVersion, out string installDir)
+        static bool CreateDirectories(uint depotId, uint depotVersion, string contentName, out string installDir)
         {
             installDir = null;
             try
             {
-                if (string.IsNullOrWhiteSpace(Config.InstallDirectory))
+                //original code
+                /*if (string.IsNullOrWhiteSpace(Config.InstallDirectory))
                 {
                     Directory.CreateDirectory(DEFAULT_DOWNLOAD_DIR);
 
@@ -68,6 +69,28 @@ namespace DepotDownloader
 
                     Directory.CreateDirectory(Path.Combine(installDir, CONFIG_DIR));
                     Directory.CreateDirectory(Path.Combine(installDir, STAGING_DIR));
+                }*/
+                if ( string.IsNullOrWhiteSpace( ContentDownloader.Config.InstallDirectory ) )
+                {
+                    DEFAULT_DOWNLOAD_DIR = $"depots";
+
+                    Directory.CreateDirectory( DEFAULT_DOWNLOAD_DIR );
+
+                    char[] arr = contentName.ToCharArray();
+
+                    arr = Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c)
+                                                      || char.IsWhiteSpace(c)
+                                                      || c == '-')));
+                    string namevar = new string(arr).Trim();
+
+                    string depotPath = Path.Combine( DEFAULT_DOWNLOAD_DIR, $"{depotId} ({namevar})" );
+                    Directory.CreateDirectory( depotPath );
+
+                    installDir = Path.Combine( depotPath, depotVersion.ToString() );
+                    Directory.CreateDirectory( installDir );
+
+                    Directory.CreateDirectory( Path.Combine( installDir, CONFIG_DIR ) );
+                    Directory.CreateDirectory( Path.Combine( installDir, STAGING_DIR ) );
                 }
                 else
                 {
