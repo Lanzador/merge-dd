@@ -169,7 +169,7 @@ namespace DepotDownloader
             return credentials;
         }
 
-        public void RequestAppInfo(uint appId, bool bForce = false, ulong AppTokenParameter = null)
+        public void RequestAppInfo(uint appId, bool bForce = false, ulong AppTokenParameter = 0)
         {
             if ((AppInfo.ContainsKey(appId) && !bForce) || bAborted)
                 return;
@@ -191,7 +191,7 @@ namespace DepotDownloader
                 {
                     this.AppTokens[token_dict.Key] = token_dict.Value;
                 }
-                if ( AppTokenParameter != null )
+                if ( AppTokenParameter != null && AppTokenParameter != 0)
                 {
                     this.AppTokens.Add( appId, AppTokenParameter );
                 }
