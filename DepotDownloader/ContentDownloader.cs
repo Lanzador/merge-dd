@@ -376,7 +376,7 @@ namespace DepotDownloader
             steam3.Disconnect();
         }
 
-        public static async Task DownloadPubfileAsync(uint appId, ulong publishedFileId)
+        public static async Task DownloadPubfileAsync(uint appId, ulong publishedFileId, ulong AppTokenParameter)
         {
             var details = steam3.GetPublishedFileDetails(appId, publishedFileId);
 
@@ -394,7 +394,7 @@ namespace DepotDownloader
             }
         }
 
-        public static async Task DownloadUGCAsync(uint appId, ulong ugcId)
+        public static async Task DownloadUGCAsync(uint appId, ulong ugcId, ulong AppTokenParameter)
         {
             SteamCloud.UGCDetailsCallback details = null;
 
@@ -658,7 +658,7 @@ namespace DepotDownloader
                 depotKey = steam3.DepotKeys[depotId];
             }
 
-            var depotKey = steam3.DepotKeys[depotId];
+            //var depotKey = steam3.DepotKeys[depotId]; (line removed)
 
             var info = new DepotDownloadInfo(depotId, manifestId, installDir, contentName);
             info.depotKey = depotKey;
