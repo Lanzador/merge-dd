@@ -202,7 +202,7 @@ namespace DepotDownloader
             return uint.Parse(buildid.Value);
         }
 
-        static ulong GetSteam3DepotManifest(uint depotId, uint appId, string branch, AppTokenParameter)
+        static ulong GetSteam3DepotManifest(uint depotId, uint appId, string branch, ulong AppTokenParameter)
         {
             var depots = GetSteam3AppSection(appId, EAppInfoSection.Depots);
             var depotChild = depots[depotId.ToString()];
@@ -449,7 +449,7 @@ namespace DepotDownloader
             File.Move(fileStagingPath, fileFinalPath);
         }
 
-        public static async Task DownloadAppAsync(uint appId, List<(uint depotId, ulong manifestId)> depotManifestIds, string branch, string os, string arch, string language, bool lv, bool isUgc, AppTokenParameter)
+        public static async Task DownloadAppAsync(uint appId, List<(uint depotId, ulong manifestId)> depotManifestIds, string branch, string os, string arch, string language, bool lv, bool isUgc, ulong AppTokenParameter)
         {
             cdnPool = new CDNClientPool(steam3, appId);
 
@@ -595,7 +595,7 @@ namespace DepotDownloader
             }
         }
 
-        static DepotDownloadInfo GetDepotInfo(uint depotId, uint appId, ulong manifestId, string branch, AppTokenParameter)
+        static DepotDownloadInfo GetDepotInfo(uint depotId, uint appId, ulong manifestId, string branch, ulong AppTokenParameter)
         {
             if (steam3 != null && appId != INVALID_APP_ID)
                 steam3.RequestAppInfo(appId, false, AppTokenParameter);
