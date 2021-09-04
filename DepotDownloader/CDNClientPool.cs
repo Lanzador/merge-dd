@@ -139,6 +139,11 @@ namespace DepotDownloader
             {
                 populatePoolEvent.Set();
             }
+            if (DepotKeyStore.ContainsKey(depotId))
+            {
+                        ((ConcurrentDictionary<uint, byte[]>)(typeof(CDNClient).GetField("depotKeys", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(client))).GetOrAdd(depotId, depotKey);
+                        await client.ConnectAsync(server).ConfigureAwait(false);
+            }
 
             return availableServerEndpoints.Take(token);
         }
