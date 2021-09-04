@@ -169,7 +169,7 @@ namespace DepotDownloader
             return credentials;
         }
 
-        public void RequestAppInfo(uint appId, bool bForce = false)
+        public void RequestAppInfo(uint appId, bool bForce = false, ulong AppTokenParameter)
         {
             if ((AppInfo.ContainsKey(appId) && !bForce) || bAborted)
                 return;
@@ -181,11 +181,19 @@ namespace DepotDownloader
                 if (appTokens.AppTokensDenied.Contains(appId))
                 {
                     Console.WriteLine("Insufficient privileges to get access token for app {0}", appId);
+                    if ( AppTokenParameter != null )
+                    {
+                        Console.WriteLine( "Will try to use app token given in the parameter.");
+                    }
                 }
 
                 foreach (var token_dict in appTokens.AppTokens)
                 {
                     this.AppTokens[token_dict.Key] = token_dict.Value;
+                }
+                if ( AppTokenParameter != null )
+                {
+                    this.AppTokens.Add( appId, AppTokenParameter );
                 }
             };
 
