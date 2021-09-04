@@ -475,11 +475,11 @@ namespace DepotDownloader
                     // Fetch app info again in case we didn't get it fully without a license.
                     steam3.RequestAppInfo(appId, false, AppTokenParameter);
                 }
-                else
-                {
-                    var contentName = GetAppOrDepotName(INVALID_DEPOT_ID, appId);
-                    throw new ContentDownloaderException(String.Format("App {0} ({1}) is not available from this account.", appId, contentName));
-                }
+                //else
+                //{
+                //    var contentName = GetAppOrDepotName(INVALID_DEPOT_ID, appId);
+                //    throw new ContentDownloaderException(String.Format("App {0} ({1}) is not available from this account.", appId, contentName));
+                //}
             }
 
             var hasSpecificDepots = depotManifestIds.Count > 0;
@@ -602,9 +602,9 @@ namespace DepotDownloader
 
             var contentName = GetAppOrDepotName(depotId, appId);
 
-            if (!AccountHasAccess(depotId))
+            if (!DepotKeyStore.ContainsKey(depotId) && !AccountHasAccess(depotId))
             {
-                Console.WriteLine("Depot {0} ({1}) is not available from this account.", depotId, contentName);
+                Console.WriteLine("Depot {0} ({1}) is not available from this account and no key found in depot key store.", depotId, contentName);
 
                 return null;
             }
