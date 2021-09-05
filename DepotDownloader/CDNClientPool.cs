@@ -153,14 +153,14 @@ namespace DepotDownloader
             return connection;
         }
 
-        public async Task<string> AuthenticateConnection(uint appId, uint depotId, CDNClient.Server server)
+        public async Task<string> AuthenticateConnection(uint appId, uint depotId, CDNClient.Server server, string depotKey)
         {
             var host = steamSession.ResolveCDNTopLevelHost(server.Host);
             var cdnKey = $"{depotId:D}:{host}";
             if (DepotKeyStore.ContainsKey(depotId))
             {
-                ((ConcurrentDictionary<uint, byte[]>)(typeof(CDNClient).GetField("depotKeys", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(client))).GetOrAdd(depotId, depotKey);
-                await client.ConnectAsync(server).ConfigureAwait(false);
+                ((ConcurrentDictionary<uint, byte[]>)(typeof(CDNClient).GetField("depotKeys", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host))).GetOrAdd(depotId, depotKey);
+                await host.ConnectAsync(server).ConfigureAwait(false);
             }
             else
             {
@@ -171,7 +171,7 @@ namespace DepotDownloader
                     var result = await authTokenCallbackPromise.Task;
                     return result.Token;
                 }
-            throw new Exception($"Failed to retrieve CDN token for server {server.Host} depot {depotId}");
+                throw new Exception($"Failed to retrieve CDN token for server {server.Host} depot {depotId}");
             }
         }
 
