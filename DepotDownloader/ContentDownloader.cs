@@ -29,7 +29,7 @@ namespace DepotDownloader
         private static Steam3Session.Credentials steam3Credentials;
         private static CDNClientPool cdnPool;
 
-        private const string DEFAULT_DOWNLOAD_DIR = "depots";
+        private static string DEFAULT_DOWNLOAD_DIR = "depots";
         private const string CONFIG_DIR = ".DepotDownloader";
         private static readonly string STAGING_DIR = Path.Combine(CONFIG_DIR, "staging");
 
@@ -51,7 +51,7 @@ namespace DepotDownloader
             }
         }
 
-        static bool CreateDirectories(uint appId, string appName, uint depotId, uint depotVersion, string contentName, out string installDir)
+        static bool CreateDirectories(uint appId, uint depotId, uint depotVersion, string contentName, out string installDir)
         {
             installDir = null;
             try
@@ -429,7 +429,7 @@ namespace DepotDownloader
         private static async Task DownloadWebFile(uint appId, string fileName, string url)
         {
             string installDir;
-            if (!CreateDirectories(appId, 0, out installDir))
+            if (!CreateDirectories(appId, appId, 0, out installDir))
             {
                 Console.WriteLine("Error: Unable to create install directories!");
                 return;
@@ -638,7 +638,7 @@ namespace DepotDownloader
             var uVersion = GetSteam3AppBuildNumber(appId, branch);
 
             string installDir;
-            if (!CreateDirectories( appId, appName, depotId, uVersion, contentName, out installDir))
+            if (!CreateDirectories( appId, depotId, uVersion, contentName, out installDir))
             {
                 Console.WriteLine("Error: Unable to create install directories!");
                 return null;
