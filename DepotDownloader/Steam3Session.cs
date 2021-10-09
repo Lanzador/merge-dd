@@ -169,7 +169,7 @@ namespace DepotDownloader
             return credentials;
         }
 
-        public void RequestAppInfo(uint appId, bool bForce = false, ulong AppTokenParameter = 0)
+        public void RequestAppInfo(uint appId, bool bForce = false)
         {
             if ((AppInfo.ContainsKey(appId) && !bForce) || bAborted)
                 return;
@@ -181,19 +181,11 @@ namespace DepotDownloader
                 if (appTokens.AppTokensDenied.Contains(appId))
                 {
                     Console.WriteLine("Insufficient privileges to get access token for app {0}", appId);
-                    if ( AppTokenParameter != null )
-                    {
-                        Console.WriteLine( "Will try to use app token given in the parameter.");
-                    }
                 }
 
                 foreach (var token_dict in appTokens.AppTokens)
                 {
                     this.AppTokens[token_dict.Key] = token_dict.Value;
-                }
-                if ( AppTokenParameter != null && AppTokenParameter != 0)
-                {
-                    this.AppTokens.Add( appId, AppTokenParameter );
                 }
             };
 
@@ -354,11 +346,11 @@ namespace DepotDownloader
                 completed = true;
                 Console.WriteLine("Got CDN auth token for {0} result: {1} (expires {2})", host, cdnAuth.Result, cdnAuth.Expiration);
 
-                //if (cdnAuth.Result != EResult.OK)
-                //{
-                //    Abort();
-                //    return;
-                //}
+                if (cdnAuth.Result != EResult.OK)
+                {
+                    Abort();
+                    return;
+                }
 
                 CDNAuthTokens[cdnKey].TrySetResult(cdnAuth);
             };

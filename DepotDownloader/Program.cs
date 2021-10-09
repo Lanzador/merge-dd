@@ -86,27 +86,6 @@ namespace DepotDownloader
                     Console.WriteLine("Warning: Unable to load filelist: {0}", ex);
                 }
             }
-            
-            string depotKeysList = GetParameter<string>(args, "-depotkeys");
-            ulong AppTokenParameter = GetParameter<ulong>(args, "-apptoken");
-
-            if (depotKeysList != null)
-            {
-                try
-                {
-                    string depotKeysListData = File.ReadAllText(depotKeysList);
-                    string[] lines = depotKeysListData.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    DepotKeyStore.AddAll(lines);
-
-                   
-                    Console.WriteLine("Using depot keys from '{0}'.", depotKeysList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Warning: Unable to load depot keys: {0}", ex.ToString());
-                }
-            }
 
             ContentDownloader.Config.InstallDirectory = GetParameter<string>(args, "-dir");
 
@@ -135,7 +114,7 @@ namespace DepotDownloader
                 {
                     try
                     {
-                        await ContentDownloader.DownloadPubfileAsync(appId, pubFile, AppTokenParameter).ConfigureAwait(false);
+                        await ContentDownloader.DownloadPubfileAsync(appId, pubFile).ConfigureAwait(false);
                     }
                     catch (Exception ex) when (
                         ex is ContentDownloaderException
@@ -170,7 +149,7 @@ namespace DepotDownloader
                 {
                     try
                     {
-                        await ContentDownloader.DownloadUGCAsync(appId, ugcId, AppTokenParameter).ConfigureAwait(false);
+                        await ContentDownloader.DownloadUGCAsync(appId, ugcId).ConfigureAwait(false);
                     }
                     catch (Exception ex) when (
                         ex is ContentDownloaderException
@@ -251,7 +230,7 @@ namespace DepotDownloader
                 {
                     try
                     {
-                        await ContentDownloader.DownloadAppAsync(appId, depotManifestIds, branch, os, arch, language, lv, isUGC, AppTokenParameter).ConfigureAwait(false);
+                        await ContentDownloader.DownloadAppAsync(appId, depotManifestIds, branch, os, arch, language, lv, isUGC).ConfigureAwait(false);
                     }
                     catch (Exception ex) when (
                         ex is ContentDownloaderException
@@ -406,8 +385,6 @@ namespace DepotDownloader
             Console.WriteLine("\t-username <user>\t\t- the username of the account to login to for restricted content.");
             Console.WriteLine("\t-password <pass>\t\t- the password of the account to login to for restricted content.");
             Console.WriteLine("\t-remember-password\t\t- if set, remember the password for subsequent logins of this user.");
-            Console.WriteLine(" \t-depotkeys <file.txt>\t- a list of depot keys to use ('depotID;hexKey' per line)");
-            Console.WriteLine(" \t-apptoken <#>\t- the app token to use, if needed.");
             Console.WriteLine();
             Console.WriteLine("\t-dir <installdir>\t\t- the directory in which to place downloaded files.");
             Console.WriteLine("\t-filelist <file.txt>\t- a list of files to download (from the manifest). Prefix file path with 'regex:' if you want to match with regex.");
