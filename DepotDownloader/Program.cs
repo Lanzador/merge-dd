@@ -88,6 +88,7 @@ namespace DepotDownloader
             }
 
             string depotKeysList = GetParameter<string>(args, "-depotkeys");
+            ulong AppTokenParameter = GetParameter<ulong>(args, "-apptoken");
 
             if (depotKeysList != null)
             {
@@ -250,7 +251,7 @@ namespace DepotDownloader
                 {
                     try
                     {
-                        await ContentDownloader.DownloadAppAsync(appId, depotManifestIds, branch, os, arch, language, lv, isUGC).ConfigureAwait(false);
+                        await ContentDownloader.DownloadAppAsync(appId, depotManifestIds, branch, os, arch, language, lv, isUGC, AppTokenParameter).ConfigureAwait(false);
                     }
                     catch (Exception ex) when (
                         ex is ContentDownloaderException
