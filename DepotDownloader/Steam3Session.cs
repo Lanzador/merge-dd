@@ -169,7 +169,7 @@ namespace DepotDownloader
             return credentials;
         }
 
-        public void RequestAppInfo(uint appId, ulong AppTokenParameter = 0, bool bForce = false)
+        public void RequestAppInfo(uint appId, ulong AppTokenParameter, bool bForce = false)
         {
             if ((AppInfo.ContainsKey(appId) && !bForce) || bAborted)
                 return;
