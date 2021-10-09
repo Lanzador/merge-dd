@@ -429,7 +429,7 @@ namespace DepotDownloader
         private static async Task DownloadWebFile(uint appId, string fileName, string url)
         {
             string installDir;
-            if (!CreateDirectories(appId, appId, 0, out installDir))
+            if (!CreateDirectories(appId, appId, 0, fileName, out installDir))
             {
                 Console.WriteLine("Error: Unable to create install directories!");
                 return;
