@@ -11,6 +11,14 @@ namespace DepotDownloader
 {
     static class Util
     {
+        public static string MakePathSafe(string file)
+        {
+            Array.ForEach(Path.GetInvalidFileNameChars(), c => file = file.Replace(c.ToString(), String.Empty));
+            file = file.Replace("/", "");
+            file = file.Replace("\\", "");
+            return file;
+        }
+        
         public static string GetSteamOS()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
